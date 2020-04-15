@@ -53,7 +53,7 @@ Route::resource('user', 'Backend\UserController');
 php artisan route:list
 ```
 
-![resource&#x8DEF;&#x7531;](../.gitbook/assets/resource_route.jpg)
+![路由 resource()](../.gitbook/assets/resource_route.jpg)
 
 ## 補充
 
