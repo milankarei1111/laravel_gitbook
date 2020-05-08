@@ -55,13 +55,14 @@ Route::any('bar', function () {
 
 >
 
-## 重新定向 redirect\(\)
+## 重新定向 redirect()
 
 {% hint style="danger" %}
 ```text
 **小心用,若加上301狀態瀏覽器會快取存取**
 ```
 {% endhint %}
+
 
 ```php
 Route::redirect('/', '/there', 301);
@@ -92,19 +93,21 @@ Route::get('hello/{name}/{age?}', function($name, $age = null){
 
 ## 路由命名 name\(\)
 
-> 使用 route\('使用在name方法命名名稱'\) 来生成連結或者重定向到該路由
->
-> \`\`\`php // 指定控制器行為的路由名稱 Route::get\('user/profile', 'UserProfileController@show'\)-&gt;name\('profile'\);
+> 使用 route('name()之命名名稱') 来生成連結或者重定向到該路由
 
-// 即定向到 [http://127.0.0.1:8000/user/profile](http://127.0.0.1:8000/user/profile) route\('profile'\)
+```php
+// 指定控制器行為的路由名稱 (定向到 http://127.0.0.1:8000/user/profile)
+Route::get('user/profile', 'UserProfileController@show')->name('profile');
 
-// 生成指定路由的URL $url = route\('profile'\);
+// 生成指定路由的URL
+$url = route('profile');
 
-// 生成重新定向 return redirect\(\)-&gt;route\('profile'\);
+// 生成重新定向
+return redirect()->route('profile');
+```
 
-```text
 ## 路由組 group()
->共享屬性，以數組的形式傳入Route::group方法的第一個參數中
+> 共享屬性，以數組的形式傳入Route::group方法的第一個參數中
 
 * 前綴 prefix() 可為路由組中所有路由的URI加上前綴：
 
@@ -136,4 +139,3 @@ Route::namespace('Auth')->group(function(){
     Route::get('/home', 'LoginController@index')->name('home');
 });
 ```
-
