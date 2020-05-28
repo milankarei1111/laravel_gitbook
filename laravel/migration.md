@@ -71,8 +71,9 @@ Schema::create('migration_users', function (Blueprint $table) {
 >             $table->bigIncrements('id');
 >             $table->string('name');
 >             $table->integer('manual_order')->default(0);
->             $table->softDeletes();
->             $table->timestamps(); // 軟刪除
+>             $table->softDeletes(); // 軟刪除
+>             $table->timestamps(); 
+>             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade'); // 外鍵約束,加入聯級
 >         });
 >     }
 > ```
