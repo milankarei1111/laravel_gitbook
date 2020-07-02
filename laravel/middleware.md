@@ -2,7 +2,11 @@
 
 [Middleware 中間件介紹 \(認證的許可\)](https://ithelp.ithome.com.tw/articles/10208371?sc=iThelpR)
 
-[[教程] 大白话 Laravel 中间件)](https://learnku.com/laravel/t/27426 )
+[[教程] 大白话 Laravel 中间件)](https://learnku.com/laravel/t/27426)
+
+![生活化範例](../.gitbook/assets/middleware.jpg)
+
+[生活化範例-參考來源](https://ithelp.ithome.com.tw/articles/10223325)
 
 ## 用途
 > HTTP 請求到達目標動作之前必須經過的“層”，每一層都會檢查請求並且可以完全拒絕它
@@ -25,6 +29,7 @@ php artisan make:middleware <MiddlewareName>
 ```
 
 ## 註冊中間件 路徑 app/Http/Kernel.php
+> 讓該中間件可被使用，例如：在Kernel.php $routeMiddleware 定義，就可用 middleware 方法將中介層指派路由上
 
 註冊類別:
 * 全局中間件($middleware)
@@ -116,7 +121,7 @@ class AfterMiddleware
 ```
 ## 應用中間件
 
-* 控制器__construct，可搭配方法 except()、 only()
+* 在控制器，使用__construct方法，可再搭配 except()、 only()方法
 
 ```php
 public function __construct()
@@ -137,3 +142,75 @@ Route::group(['middleware' => 'auth:api'], function () {
 ```
 
 ![應用範例](../.gitbook/assets/use_middleware.jpg)
+
+
+## 中介層參數 <middlewareNam:param>
+>在路由中可使用冒號 : 來區隔中介層名稱與指派參數，多筆參數可使用逗號作為分隔
+
+```php
+// 路由寫法1
+Route::group(['middleware' => 'role:editor'] function () {
+
+});
+
+// 路由寫法2
+Route::put('post/{id}', function ($id) {
+    
+})->middleware('role:editor');
+```
+
+```php
+
+// middleware CheckRole
+
+<?php
+
+namespace App\Http\Middleware;
+
+use Closure;
+
+class CheckRole
+{
+    /**
+     * 處理傳進來的請求。
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \Closure  $next
+     * @param  string  $role
+     * @return mixed
+     */
+    public function handle($request, Closure $next, $role)
+    {
+        if (! $request->user()->hasRole($role)) {
+            // 重導...
+        }
+
+        return $next($request);
+    }
+
+}
+namespace App\Http\Middleware;
+
+use Closure;
+
+class CheckRole
+{
+    /**
+     * 處理傳進來的請求。
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \Closure  $next
+     * @param  string  $role
+     * @return mixed
+     */
+    public function handle($request, Closure $next, $role)
+    {
+        if (! $request->user()->hasRole($role)) {
+            // 重導...
+        }
+
+        return $next($request);
+    }
+
+}
+```
